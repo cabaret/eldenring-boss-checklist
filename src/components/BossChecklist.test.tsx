@@ -39,7 +39,7 @@ describe('<BossChecklist />', () => {
   test('it renders a title with the total killed bosses', () => {
     render(<BossChecklist bosses={mockData} />)
 
-    expect(screen.getByText('Total: 2 / 4')).toBeInTheDocument()
+    expect(screen.getByText('Total: 2/4')).toBeInTheDocument()
   })
 
   test('it renders a title and kill count per location', () => {
@@ -47,11 +47,11 @@ describe('<BossChecklist />', () => {
 
     const belgiumLocationTitle = screen.getAllByText('Belgium')[0]
 
-    expect(within(belgiumLocationTitle).getByText('(1 / 2)')).toBeInTheDocument()
+    expect(within(belgiumLocationTitle).getByText('(1/2)')).toBeInTheDocument()
 
     const ukLocationTitle = screen.getAllByText('UK')[0]
 
-    expect(within(ukLocationTitle).getByText('(2 / 2)')).toBeInTheDocument()
+    expect(within(ukLocationTitle).getByText('(2/2)')).toBeInTheDocument()
   })
 
   test('it renders the data for a boss', () => {

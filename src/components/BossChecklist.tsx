@@ -16,7 +16,7 @@ function LocationHeader({ killed, total, location }: LocationHeaderProps) {
     <h3 className="sticky top-0 bg-white text-2xl pl-6 pb-2 my-4 border-b-2 border-grey-500">
       {location}{' '}
       <span className="text-lg">
-        ({killed} / {total})
+        ({killed}/{total})
       </span>
     </h3>
   )
@@ -98,7 +98,7 @@ function BossChecklist({ bosses }: BossChecklistProps) {
   return (
     <>
       <h2 className="text-4xl pl-6">
-        Total: {killedBosses.length} / {bosses.length}
+        Total: {killedBosses.length}/{bosses.length}
       </h2>
       {Object.entries(bossesByLocation).map(([location, bossesForLocation]) => (
         <div key={location}>
