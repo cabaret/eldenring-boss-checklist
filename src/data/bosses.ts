@@ -1093,6 +1093,12 @@ const bosses: Array<Boss> = [
     description: 'At the [Erdtree Sanctuary] site of grace.',
   },
   {
+    id: 218,
+    name: 'Godfrey, First Elden Lord (Golden Shade)',
+    location: 'Altus Plateau',
+    description: 'At the [Erdtree Sanctuary] site of grace.',
+  },
+  {
     id: 215,
     name: 'Mohg, Lord of Blood',
     location: 'Siofra River',
