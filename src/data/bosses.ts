@@ -702,13 +702,19 @@ const bosses: Array<Boss> = [
     name: 'Valiant Gargoyle & Valiant Gargoyle (Twinblade)',
     location: 'Siofra River',
   },
-  { id: 128, name: 'Fia’s Champions', location: 'Deeproot Depths' },
+  { id: 128, name: "Fia's Champions", location: 'Deeproot Depths' },
   { id: 129, name: 'Erdtree Avatar', location: 'Deeproot Depths' },
   {
     id: 130,
     name: "2x Night's Cavalry",
     location: 'Mountaintops of the Giants',
     description: 'Guarding the wagon in the Snowfields',
+  },
+  {
+    id: 218,
+    name: "Night's Cavalry (Forbidden Lands)",
+    location: 'Mountaintop of the Giants',
+    description: 'Past the Forbidden Lands grace',
   },
   {
     id: 131,
