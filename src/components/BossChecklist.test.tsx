@@ -78,17 +78,17 @@ describe('<BossChecklist />', () => {
   test('it saves the boss status to localStorage', () => {
     render(<BossChecklist bosses={mockData} />)
 
-    expect(screen.getAllByRole('checkbox')[0]).toBeChecked()
-
-    fireEvent.click(screen.getAllByRole('checkbox')[0])
-
-    expect(setItemMock).toHaveBeenCalledWith('eldenring.checklist.bosses', '[4]')
-    expect(screen.getAllByRole('checkbox')[0]).not.toBeChecked()
-
-    expect(screen.getAllByRole('checkbox')[1]).not.toBeChecked()
+    expect(screen.getAllByRole('checkbox')[1]).toBeChecked()
 
     fireEvent.click(screen.getAllByRole('checkbox')[1])
+
+    expect(setItemMock).toHaveBeenCalledWith('eldenring.checklist.bosses', '[4]')
+    expect(screen.getAllByRole('checkbox')[1]).not.toBeChecked()
+
+    expect(screen.getAllByRole('checkbox')[2]).not.toBeChecked()
+
+    fireEvent.click(screen.getAllByRole('checkbox')[2])
     expect(setItemMock).toHaveBeenCalledWith('eldenring.checklist.bosses', '[4,3]')
-    expect(screen.getAllByRole('checkbox')[1]).toBeChecked()
+    expect(screen.getAllByRole('checkbox')[2]).toBeChecked()
   })
 })

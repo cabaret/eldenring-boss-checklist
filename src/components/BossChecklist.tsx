@@ -25,10 +25,11 @@ function LocationHeader({ killed, total, location }: LocationHeaderProps) {
 type LocationBossTableProps = {
   killed: Array<number>
   bosses: Array<Boss>
+  showDescription: boolean
   onBossSelect: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-function LocationBossTable({ killed, bosses, onBossSelect }: LocationBossTableProps) {
+function LocationBossTable({ killed, bosses, onBossSelect, showDescription }: LocationBossTableProps) {
   return (
     <table className="w-full">
       <thead>
@@ -36,7 +37,7 @@ function LocationBossTable({ killed, bosses, onBossSelect }: LocationBossTablePr
           <th className="w-28">Killed</th>
           <th className="text-left w-3/12">Name</th>
           <th className="text-left w-2/12">Location</th>
-          <th className="text-left">Description</th>
+          <th className={classNames('text-left', { invisible: !showDescription })}>Description</th>
         </tr>
       </thead>
       <tbody>
@@ -62,7 +63,7 @@ function LocationBossTable({ killed, bosses, onBossSelect }: LocationBossTablePr
             </td>
             <td>{b.name}</td>
             <td>{b.location}</td>
-            <td>{b.description}</td>
+            <td className={classNames({ invisible: !showDescription })}>{b.description}</td>
           </tr>
         ))}
       </tbody>
@@ -78,6 +79,7 @@ function BossChecklist({ bosses }: BossChecklistProps) {
   const bossesByLocation = groupBy(prop('location'), bosses)
 
   const [killedBosses, setKilledBosses] = useState<Array<typeof bosses[number]['id']>>([])
+  const [showDescription, setShowDescription] = useState(false)
 
   useEffect(() => {
     setKilledBosses(JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]'))
@@ -100,6 +102,12 @@ function BossChecklist({ bosses }: BossChecklistProps) {
       <h2 className="text-4xl pl-6">
         Total: {killedBosses.length}/{bosses.length}
       </h2>
+
+      <label className="inline-flex my-4 pl-6 items-center">
+        <span>show descriptions</span>{' '}
+        <input type="checkbox" className="ml-2" onChange={e => setShowDescription(e.target.checked)} />
+      </label>
+
       {Object.entries(bossesByLocation).map(([location, bossesForLocation]) => (
         <div key={location}>
           <LocationHeader
@@ -107,7 +115,12 @@ function BossChecklist({ bosses }: BossChecklistProps) {
             killed={getNumberOfKilledForLocation(bossesForLocation, killedBosses)}
             total={bossesForLocation.length}
           />
-          <LocationBossTable killed={killedBosses} bosses={bossesForLocation} onBossSelect={onBossSelect} />
+          <LocationBossTable
+            killed={killedBosses}
+            bosses={bossesForLocation}
+            onBossSelect={onBossSelect}
+            showDescription={showDescription}
+          />
         </div>
       ))}
     </>
