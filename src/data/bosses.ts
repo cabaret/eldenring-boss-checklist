@@ -1020,12 +1020,6 @@ const bosses: Array<Boss> = [
   },
   { id: 196, name: 'Mad Tongue Alberich', location: 'Roundtable Hold' },
   {
-    id: 197,
-    name: 'Crucible Knight',
-    location: 'Altus Plateau',
-    description: 'Near Tanith; triggered by attacking her.',
-  },
-  {
     id: 198,
     name: 'Great Horned Tragoth',
     location: 'Liurnia',
