@@ -13,9 +13,9 @@ root.render(
     >
       <img src={GH} className="w-6 h-6 flex justify-center align-center" alt="Github" />
     </a>
-    <a href="https://cupofcode.be" className="fixed top-0 right-0 z-20 h-8 w-8 bg-[#1c1c1c]">
+    {/* <a href="https://cupofcode.be" className="fixed top-0 right-0 z-20 h-8 w-8 bg-[#1c1c1c]">
       <img src="https://cupofcode.be/favicon-32x32.png" alt="" />
-    </a>
+    </a> */}
     <App />
   </React.StrictMode>,
 )
