@@ -3,7 +3,8 @@ import classNames from 'classnames'
 import { groupBy, prop } from 'ramda'
 import { Boss } from '../data/bosses'
 
-const LOCAL_STORAGE_KEY = 'eldenring.checklist.bosses'
+const BOSS_LIST_LOCAL_STORAGE_KEY = 'eldenring.checklist.bosses'
+const DESCRIPTIONS_LOCAL_STORAGE_KEY = 'eldenring.checklist.descriptions'
 
 type LocationHeaderProps = {
   location: string
@@ -79,10 +80,12 @@ function BossChecklist({ bosses }: BossChecklistProps) {
   const bossesByLocation = groupBy(prop('location'), bosses)
 
   const [killedBosses, setKilledBosses] = useState<Array<typeof bosses[number]['id']>>([])
-  const [showDescription, setShowDescription] = useState(false)
+  const [showDescription, setShowDescription] = useState(
+    JSON.parse(window.localStorage.getItem(DESCRIPTIONS_LOCAL_STORAGE_KEY) || 'false'),
+  )
 
   useEffect(() => {
-    setKilledBosses(JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]'))
+    setKilledBosses(JSON.parse(localStorage.getItem(BOSS_LIST_LOCAL_STORAGE_KEY) || '[]'))
   }, [])
 
   const onBossSelect = ({ target: { checked, value } }: React.ChangeEvent<HTMLInputElement>) => {
@@ -91,12 +94,11 @@ function BossChecklist({ bosses }: BossChecklistProps) {
       : killedBosses.filter(id => parseInt(value) !== id)
 
     setKilledBosses(nextKilledBosses)
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(nextKilledBosses))
+    localStorage.setItem(BOSS_LIST_LOCAL_STORAGE_KEY, JSON.stringify(nextKilledBosses))
   }
 
   const getNumberOfKilledForLocation = (bossesForLocation: Array<Boss>, killedBosses: Array<number>) =>
     bossesForLocation.reduce((acc, boss) => (killedBosses.includes(boss.id) ? acc + 1 : acc), 0)
-
   return (
     <>
       <h2 className="text-4xl pl-6">
@@ -105,7 +107,15 @@ function BossChecklist({ bosses }: BossChecklistProps) {
 
       <label className="inline-flex my-4 pl-6 items-center">
         <span>show descriptions</span>{' '}
-        <input type="checkbox" className="ml-2" onChange={e => setShowDescription(e.target.checked)} />
+        <input
+          type="checkbox"
+          className="ml-2"
+          checked={showDescription}
+          onChange={e => {
+            window.localStorage.setItem(DESCRIPTIONS_LOCAL_STORAGE_KEY, JSON.stringify(e.target.checked))
+            setShowDescription(e.target.checked)
+          }}
+        />
       </label>
 
       {Object.entries(bossesByLocation).map(([location, bossesForLocation]) => (
