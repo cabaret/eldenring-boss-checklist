@@ -10,16 +10,18 @@ const DESCRIPTIONS_LOCAL_STORAGE_KEY = 'eldenring.checklist.descriptions'
 type LocationHeaderProps = {
   location: string
   killed: number
+  lockedOut: number
   total: number
 }
 
-function LocationHeader({ killed, total, location }: LocationHeaderProps) {
+function LocationHeader({ killed, lockedOut, total, location }: LocationHeaderProps) {
   return (
     <h3 className="sticky top-0 bg-white text-2xl pl-6 pb-2 my-4 border-b-2 border-grey-500">
       {location}{' '}
       <span className="text-lg">
         ({killed}/{total})
-      </span>
+      </span>{' '}
+      {!!lockedOut && <span className="text-lg text-gray-300">(Locked out: {lockedOut})</span>}
     </h3>
   )
 }
@@ -45,11 +47,11 @@ function LocationBossTable({
     <table className="w-full">
       <thead>
         <tr>
-          <th className="w-28">Killed</th>
+          <th className="w-20">Killed</th>
+          <th className="w-28">Locked out</th>
           <th className="text-left w-3/12">Name</th>
           <th className="text-left w-2/12">Location</th>
           <th className={classNames('text-left', { invisible: !showDescription })}>Description</th>
-          <th className="w-28">Locked out</th>
         </tr>
       </thead>
       <tbody>
@@ -62,34 +64,38 @@ function LocationBossTable({
             })}
           >
             <td className="text-center">
-              <label htmlFor={b.id.toString()} className="block">
-                <input
-                  type="checkbox"
-                  value={b.id}
-                  name={b.id.toString()}
-                  checked={killed.includes(b.id)}
-                  id={b.id.toString()}
-                  className=""
-                  onChange={onBossSelect}
-                />
-              </label>
+              {!lockedOut.includes(b.id) && (
+                <label htmlFor={b.id.toString()} className="block">
+                  <input
+                    type="checkbox"
+                    value={b.id}
+                    name={b.id.toString()}
+                    checked={killed.includes(b.id)}
+                    id={b.id.toString()}
+                    className=""
+                    onChange={onBossSelect}
+                  />
+                </label>
+              )}
+            </td>
+            <td className="text-center">
+              {!killed.includes(b.id) && (
+                <label htmlFor={b.id.toString()} className="block">
+                  <input
+                    type="checkbox"
+                    value={b.id}
+                    name={b.id.toString()}
+                    checked={lockedOut.includes(b.id)}
+                    id={b.id.toString()}
+                    className=""
+                    onChange={onBossLockOutSelect}
+                  />
+                </label>
+              )}
             </td>
             <td>{b.name}</td>
             <td>{b.location}</td>
             <td className={classNames({ invisible: !showDescription })}>{b.description}</td>
-            <td className="text-center">
-              <label htmlFor={b.id.toString()} className="block">
-                <input
-                  type="checkbox"
-                  value={b.id}
-                  name={b.id.toString()}
-                  checked={lockedOut.includes(b.id)}
-                  id={b.id.toString()}
-                  className=""
-                  onChange={onBossLockOutSelect}
-                />
-              </label>
-            </td>
           </tr>
         ))}
       </tbody>
@@ -135,6 +141,9 @@ function BossChecklist({ bosses }: BossChecklistProps) {
   const getNumberOfKilledForLocation = (bossesForLocation: Array<Boss>, killedBosses: Array<number>) =>
     bossesForLocation.reduce((acc, boss) => (killedBosses.includes(boss.id) ? acc + 1 : acc), 0)
 
+  const getNumberOfLockedForLocation = (bossesForLocation: Array<Boss>, lockedOut: Array<number>) =>
+    bossesForLocation.reduce((acc, boss) => (lockedOut.includes(boss.id) ? acc + 1 : acc), 0)
+
   return (
     <>
       <h2 className="text-4xl pl-6">
@@ -159,6 +168,7 @@ function BossChecklist({ bosses }: BossChecklistProps) {
           <LocationHeader
             location={location}
             killed={getNumberOfKilledForLocation(bossesForLocation, killedBosses)}
+            lockedOut={getNumberOfLockedForLocation(bossesForLocation, lockedOut)}
             total={bossesForLocation.length}
           />
           <LocationBossTable
