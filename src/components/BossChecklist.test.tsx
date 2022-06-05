@@ -85,10 +85,10 @@ describe('<BossChecklist />', () => {
     expect(setItemMock).toHaveBeenCalledWith('eldenring.checklist.bosses', '[4]')
     expect(screen.getAllByRole('checkbox')[1]).not.toBeChecked()
 
-    expect(screen.getAllByRole('checkbox')[2]).not.toBeChecked()
+    expect(screen.getAllByRole('checkbox')[3]).not.toBeChecked()
 
-    fireEvent.click(screen.getAllByRole('checkbox')[2])
+    fireEvent.click(screen.getAllByRole('checkbox')[3])
     expect(setItemMock).toHaveBeenCalledWith('eldenring.checklist.bosses', '[4,3]')
-    expect(screen.getAllByRole('checkbox')[2]).toBeChecked()
+    expect(screen.getAllByRole('checkbox')[3]).toBeChecked()
   })
 })
